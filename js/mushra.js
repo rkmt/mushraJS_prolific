@@ -365,9 +365,6 @@ function SubmitTestResults() {
 function AudioID2Path(TestIndx, AudioID) {
    var filePath = "";
    switch (AudioID) {
-        case "Master": filePath = TestData.Testsets[TestIndx].Master;
-                       break;
-                       
         case "Reference": filePath = TestData.Testsets[TestIndx].Reference;                       
                           break;
         case "HiddenRef": filePath = TestData.Testsets[TestIndx].Reference;                       

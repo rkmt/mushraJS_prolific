@@ -8,7 +8,6 @@ var TestData = {
   "LoopByDefault": false,
   "ShowFileIDs": false,
   "EnableABLoop": false,
-  "EnableMaster": false,
   "EnableOnlineSubmission": false,
   "SubmitResultsURL": "",
   "SupervisorContact": "",
