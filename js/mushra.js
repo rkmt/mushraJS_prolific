@@ -59,6 +59,10 @@ var AudioPool = {
 
 		$('.audiotags').eq(this.NumUsed).attr('src', path);
 		$('.audiotags').eq(this.NumUsed).attr('id', "audio"+ID);
+		if (this.LoopAudio) {
+			$('.audiotags').eq(this.NumUsed).attr('loop', 'loop');
+		}
+		
 		$('.audiotags').eq(this.NumUsed).on("timeupdate", this.timeUpdateCallback);
 		
 		this.NumUsed++;		
@@ -89,16 +93,27 @@ var AudioPool = {
 		}
 	},
 	
+	// set loop mode
 	setLooped: function(loop) {
 		if (loop!=this.LoopAudio) {
 			this.LoopAudio = loop;
 			
 			var audioTags = document.body.getElementsByTagName("audio");   	
 			for (var i = 0; i<audioTags.length; i++) { 
-				audioTags[i].loop = loop; //!audioTags[i].loop;
+				audioTags[i].loop = loop;
 			}
 		}
-	},	
+	},
+	
+	// toggle loop mode
+	toggleLooped: function() {
+		this.LoopAudio = !this.LoopAudio;
+		
+		var audioTags = document.body.getElementsByTagName("audio");   	
+		for (var i = 0; i<audioTags.length; i++) { 
+			audioTags[i].loop = this.LoopAudio;
+		}		
+	},		
 }
 
 // ###################################################################
@@ -147,7 +162,7 @@ function pauseAudios() {
 // ###################################################################
 // enable looping for all audios
 function loopAudios() {    
-    AudioPool.setLooped(true);
+    AudioPool.toggleLooped();
 }
 
 // ###################################################################
@@ -163,13 +178,11 @@ function playAudio(id) {
     
     AudioPool.pause();
 
-	var sliderID = id.replace(/audio/g, 'slider');
-	
 	$('.RateSlider').parent().css('background-color', 'transparent');
-	$('a').removeClass('playButton-active');
+	$('button').removeClass('playButton-active');
 	
-	$('#'+sliderID).parent().css('background-color', '#D5E5F6');
-	$('#'+id+'Btn').addClass('playButton-active');
+	$('#slider'+id).parent().css('background-color', '#D5E5F6');
+	$('#play'+id+'Btn').addClass('playButton-active');
 	
 	AudioPool.play(id);
 }
@@ -423,22 +436,6 @@ function RunTest(TestIndx) {
  	
 	var fileID = "";
 	
-    // add master
-	if (TestData.EnableMaster==true) {
-		fileID = "Master";
-		row     = tab.insertRow(-1);
-		cell[0] = row.insertCell(-1);
-		cell[0].innerHTML = "<span class='testItem'>Master</span>";
-		cell[1] = row.insertCell(-1);
-		TestState.AudiosInLoadQueue += 1;
-		cell[1].innerHTML =  '<button id="playMasterBtn" class="playButton" onclick="playAudio(\''+fileID+'\')">Play</button>';
-		cell[2] = row.insertCell(-1);
-		cell[2].innerHTML = "<button class='stopButton' onclick='pauseAudios();'>Stop</button>";  
-		cell[3] = row.insertCell(-1);
-		cell[3].innerHTML = "";  	
-		AudioPool.addAudio(AudioID2Path(TestIndx, fileID), fileID)		
-	}
-	
     // add reference
 	fileID = "Reference";
     row  = tab.insertRow(-1);
@@ -446,7 +443,7 @@ function RunTest(TestIndx) {
     cell[0].innerHTML = "<span class='testItem'>Reference</span>";
     cell[1] = row.insertCell(-1);
 	TestState.AudiosInLoadQueue += 1;
-    cell[1].innerHTML =  '<button id="playReferenceBtn" class="playButton" onclick="playAudio(\''+fileID+'\')">Play</button>';
+    cell[1].innerHTML =  '<button id="play'+fileID+'Btn" class="playButton" onclick="playAudio(\''+fileID+'\')">Play</button>';
     cell[2] = row.insertCell(-1);
 	cell[2].innerHTML = "<button class='stopButton' onclick='pauseAudios();'>Stop</button>";  	
     cell[3] = row.insertCell(-1);
@@ -543,6 +540,12 @@ function PageReady() {
    	} else {
  		$('#TestTitle').html('Internet Explorer is not supported! Please use Firefox, Opera, Google Chrome or any other HTML5 capable browser.');
 	 }
+	 
+	if (TestData.LoopByDefault) {
+		document.getElementById('loopAudio').checked = true;
+	} else {
+		document.getElementById('loopAudio').checked = false;
+	}	 
 	
 	// setup buttons and controls
 	$('#VolumeSlider').slider({
@@ -562,14 +565,6 @@ function PageReady() {
 	AudioPool.register();
 	AudioPool.timeUpdateCallback = audioTimeUpdate;
 	AudioPool.setLooped(TestData.LoopByDefault);
-	
-	if (TestData.LoopByDefault) {
-		document.getElementById('loopAudio').checked = true;
-	} else {
-		document.getElementById('loopAudio').checked = false;
-	}	
-	
-	alert('Loop not properly implemented yet');
 	
 	// install handler to warn user when test is running and he tries to leave the page
 	window.onbeforeunload = function () {
