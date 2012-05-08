@@ -1,7 +1,8 @@
 // configure the test here
 var TestData = {
-  "TestName": "You Test Name",
-  "RateScalePng": "scale.png",
+  "TestName": "Your Test Name",
+  "RateScalePng": "scale_abs.png",
+  "RateScaleBgPng": "scale_abs_background.png",
   "RateScaleSvg": "scale.svg",  
   "RateMinValue": -4,
   "RateMaxValue": 4,

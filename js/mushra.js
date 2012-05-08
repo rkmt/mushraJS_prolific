@@ -44,6 +44,16 @@ var AudioPool = {
 	
 	}, 
 	
+	// callback for error event
+	errorCallback: function(e) {
+	
+	}, 
+	
+	// callback for error event
+	dataLoadedCallback: function(e) {
+	
+	}, 	
+	
 	// clear all files
 	clear: function(){
 		this.NumUsed = 0;	
@@ -53,7 +63,7 @@ var AudioPool = {
 	addAudio : function(path, ID){
 	
 		if (this.NumPlayers<=this.NumUsed) {
-			$('<audio id="" src="" preload="auto" onloadeddata="audioLoadedCallback();" class="audiotags"></audio>').appendTo('#AudioPool'); 		
+			$('<audio id="" src="" preload="auto" class="audiotags"></audio>').appendTo('#AudioPool'); 		
 			this.NumPlayers++;
 		}
 
@@ -63,7 +73,10 @@ var AudioPool = {
 			$('.audiotags').eq(this.NumUsed).attr('loop', 'loop');
 		}
 		
+		$('.audiotags').eq(this.NumUsed).off();
 		$('.audiotags').eq(this.NumUsed).on("timeupdate", this.timeUpdateCallback);
+		$('.audiotags').eq(this.NumUsed).on("loadeddata", this.dataLoadedCallback);
+		$('.audiotags').eq(this.NumUsed).on("error", this.errorCallback);
 		
 		this.NumUsed++;		
 	},	
@@ -154,8 +167,8 @@ function audioLoadedCallback() {
 // ###################################################################
 // pause all audios
 function pauseAudios() {    
-    AudioPool.pause();
-    $(".playButton").removeClass('playButton-active');
+	AudioPool.pause();
+	$(".playButton").removeClass('playButton-active');
 	$('.RateSlider').parent().css('background-color', 'transparent');    
 }
 
@@ -199,6 +212,17 @@ function audioTimeUpdate(e) {
 	if (s<10) s = "0"+s;            
 	
 	duration.innerHTML = m + ':' + s;
+}
+
+// ###################################################################
+// audio loading error callback
+function audioLoadError(e) {
+
+	var s = parseInt(e.target.currentTime % 60);
+
+	var errorTxt = "<p>ERROR loading audio file "+ e.target.src+"</p>";
+	
+	$('#LoadOverlay').append(errorTxt);
 }
 
 // ###################################################################
@@ -439,7 +463,7 @@ function RunTest(TestIndx) {
     cell[0] = row.insertCell(-1);
     cell[0].innerHTML = "<span class='testItem'>Reference</span>";
     cell[1] = row.insertCell(-1);
-	TestState.AudiosInLoadQueue += 1;
+	TestState.AudiosInLoadQueue = 1;
     cell[1].innerHTML =  '<button id="play'+fileID+'Btn" class="playButton" onclick="playAudio(\''+fileID+'\')">Play</button>';
     cell[2] = row.insertCell(-1);
 	cell[2].innerHTML = "<button class='stopButton' onclick='pauseAudios();'>Stop</button>";  	
@@ -476,8 +500,8 @@ function RunTest(TestIndx) {
 			else
 				fileIDstr = fileID;			
         }
-        cell[3].innerHTML = "<div class='RateSlider' id='slider"+fileID+"' >"+fileIDstr+"</div>";             
-		
+        cell[3].innerHTML = "<div class='RateSlider' id='slider"+fileID+"' >"+fileIDstr+"</div>";
+
 		AudioPool.addAudio(AudioID2Path(TestIndx, fileID), fileID);
 
     }        
@@ -502,7 +526,7 @@ function RunTest(TestIndx) {
 	
 	$('.RateSlider').each( function() {
 		$(this).slider({
-				value: 0,
+				value: TestData.RateDefaultValue,
 				min: TestData.RateMinValue,
 				max: TestData.RateMaxValue,
 				animate: false,
@@ -510,6 +534,7 @@ function RunTest(TestIndx) {
 			});
 			
 		$(this).slider('option', 'value', 0);
+		$(this).css('background-image', 'url('+TestData.RateScaleBgPng+')');
 	});
 
 	$('.stopButton').each( function() {
@@ -561,6 +586,9 @@ function PageReady() {
 	// create audio pool
 	AudioPool.register();
 	AudioPool.timeUpdateCallback = audioTimeUpdate;
+	AudioPool.errorCallback = audioLoadError;
+	AudioPool.dataLoadedCallback = audioLoadedCallback;
+	
 	AudioPool.setLooped(TestData.LoopByDefault);
 	
 	// install handler to warn user when test is running and he tries to leave the page

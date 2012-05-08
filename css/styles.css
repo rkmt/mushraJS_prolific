@@ -13,7 +13,7 @@ body {
 #Wrapper {
 	margin-left:auto;
 	margin-right:auto;
-	width: 700px;
+	width: 720px;
 }
 
 .commonBox {
@@ -77,9 +77,10 @@ body {
 }
 
 .RateSlider {
-	width:370px;
-	margin-left:25px;
-	margin-right:auto;
+
+	width: 400px;
+	margin-left:15px;
+	margin-right:15px;
 }
 
 .activeAudioCell {
@@ -132,7 +133,7 @@ body {
 	display: none;	
 }
 
-#PlayerControls div{
+#PlayerControls > div{
 	float:left;	
 	margin-right:20px;
 }

@@ -71,9 +71,10 @@
 			<button id="SubmitData" onclick="SubmitTestResults();">Submit</button>
 		</div>
 		
-		<!-- the results are displayed in this box -->
+		<!-- the test results are displayed in this box -->
 		<div id="ResultsBox">
 		</div>
+		
 	</div>
 
 	<!-- container for the test items and sliders -->
@@ -87,19 +88,20 @@
 
 	<!-- controls to go to next/previous test -->
 	<div id="TestControls" class="commonBox">
-		<button id="nextTest" onclick="RunTest(TestState.CurrentTest+1);" >Next Test</>
-		
+		<button id="nextTest" onclick="RunTest(TestState.CurrentTest+1);" >Next Test</>		
 		<button id="prevTest" onclick="RunTest(TestState.CurrentTest-1);" >Previous Test</>	
 	</div>
 
 	<!-- playback control -->
 	<div id="PlayerControls" class="commonBox">
 		<div id="PauseButton" onclick="pauseAudios();">Pause</div>
-		<input id="loopAudio" onchange="loopAudios(this.value)" type="checkbox" value="Loop" /><label for="loopAudio">Loop</label>
 		
-		<span id="duration">00:00</span>  	
+		<input id="loopAudio" onchange="loopAudios(this.value)" type="checkbox" value="Loop" /><label for="loopAudio">Loop</label>		
 		
 		<div id="Volume">Volume<div id="VolumeSlider"></div></div>
+		
+		<span id="duration">00:00</span>
+		
 	</div>
 </div>
 
