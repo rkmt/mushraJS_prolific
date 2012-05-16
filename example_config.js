@@ -8,7 +8,7 @@ var TestData = {
   "RateDefaultValue":0,
   "LoopByDefault": false,
   "ShowFileIDs": false,
-  "EnableABLoop": false,
+  "EnableABLoop": true,
   "EnableOnlineSubmission": false,
   "SubmitResultsURL": "",
   "SupervisorContact": "",

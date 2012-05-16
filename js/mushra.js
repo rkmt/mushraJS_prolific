@@ -581,6 +581,11 @@ function RunTest(TestIndx) {
 // is called when onLoad event of the <body> is fired
 function PageReady() {
 
+	// check if config file is found and TestData is loaded
+	if (typeof(TestData) == 'undefined') {
+		alert('Config file could not be loaded!');
+	}
+
     // check for IE as it does not support .wav in <audio> tags
 	if (!clientIsIE()) {
 	    // show introduction
@@ -588,7 +593,7 @@ function PageReady() {
     	$('#TestIntroduction').show();
    	} else {
  		$('#TestTitle').html('Internet Explorer is not supported! Please use Firefox, Opera, Google Chrome or any other HTML5 capable browser.');
-	 }
+	}
 	 
 	if (TestData.LoopByDefault) {
 		document.getElementById('loopAudio').checked = true;
