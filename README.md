@@ -11,13 +11,13 @@ in the [ITU-R recommendation BS.1534-1](http://www.itu.int/rec/R-REC-BS.1116-1-1
 
 The framework does not rely on any server side ressources and completely runs locally in 
 your browser if desired. However it is possible to transmit the results to a web service to
-collect them and do further evalutaion.
+collect them and do further evaluation.
 
 
 Requirements
 ---------------------
 
-As the framework uses modern HTML5 techniques for audio playback and user interface it 
+As the framework uses modern HTML5 techniques for audio playback and the user interface it 
 is very important to use a modern web browser. Please keep in mind, that the playback 
 of .WAV audio files is supported on all major browsers with the only exception of the 
 Microsoft Internet Explorer. That's the only reason why this browser is currently not 

@@ -37,8 +37,7 @@
         <br />
         <br />
 		Instructions:
-		<ul>
-			<li>Please use an up to date version of Mozilla Firefox! With other browsers you might experience problems with the audio playback.</li>
+		<ul>			
 		    <li>Most important: use high quality studio headphones and a good soundcard!</li>
 		    <li>Listen through all test files and test sets before you do any ratings to get used to the material.</li>
 		    <li>Rate the quality of the test items only compared to the reference on top.</li>		    		    
@@ -94,14 +93,29 @@
 
 	<!-- playback control -->
 	<div id="PlayerControls" class="commonBox">
-		<div id="PauseButton" onclick="pauseAudios();">Pause</div>
+		<!--div id="PauseButton" onclick="pauseAudios();">Pause</div-->
 		
-		<input id="loopAudio" onchange="loopAudios(this.value)" type="checkbox" value="Loop" /><label for="loopAudio">Loop</label>		
 		
-		<div id="Volume">Volume<div id="VolumeSlider"></div></div>
+		<div id="duration">
+			<span>00:00</span>
+		</div>
 		
-		<span id="duration">00:00</span>
+		<div id="TimeLine">
+			<div id="ProgressBar"></div>
+			<div id="ABRange"></div>
+		</div>
 		
+		<div>
+			<input id="loopAudio" onchange="loopAudios(this.value)" type="checkbox" value="Loop" /><label for="loopAudio">Loop</label>				
+		</div>
+		
+		<div id="Volume">
+			Volume
+			<div id="VolumeSlider"></div>
+		</div>
+		
+		<br style="clear:both"/>
+	
 	</div>
 </div>
 

@@ -102,6 +102,15 @@ body {
 	display: none;
 }
 
+#PlayerControls {
+	display: none;	
+}
+
+#PlayerControls > div{
+	float:left;	
+	margin-right:40px;
+}
+
 #nextTest {
 	float: right;
 }
@@ -118,25 +127,27 @@ body {
 }
 
 #duration {
-	margin-top:0.1em;
+	margin-top:0.5em;
+	margin-right:20px !important;
+}
+
+#duration  > span{
 	padding:0.4em;
 	border: 1px solid #bbbbbb;	
 	font-family: monospace;
     border-radius: 0.2em;	
 }
 
-#timeline {
+#TimeLine {
 	width:250px;
+	margin-right:20px !important;	
 }
 
-#PlayerControls {
-	display: none;	
+#TimeLine > #ProgressBar{
+	height:10px;
+	margin-bottom:10px;
 }
 
-#PlayerControls > div{
-	float:left;	
-	margin-right:20px;
-}
 
 .playButton{
 	font-size:80%;

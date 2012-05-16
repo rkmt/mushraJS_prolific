@@ -33,6 +33,7 @@ var AudioPool = {
 	"NumPlayers": 0,
 	"NumUsed": 0,
 	"LoopAudio": 0,
+	"ABPos": [ 0, 100],
 	
 	// insert audio pool into DOM
 	register: function() {
@@ -43,6 +44,20 @@ var AudioPool = {
 	timeUpdateCallback: function(e) {
 	
 	}, 
+	
+	// callback for time update event
+	ABLoopCallback: function(e) {
+		var progress = e.target.currentTime / e.target.duration * 100;
+			
+		if (progress > AudioPool.ABPos[1]) {
+			if (AudioPool.LoopAudio == true)
+				e.target.currentTime = AudioPool.ABPos[0] / 100 * e.target.duration;
+			else
+				e.target.pause();
+		}
+		
+
+	}, 	
 	
 	// callback for error event
 	errorCallback: function(e) {
@@ -69,12 +84,17 @@ var AudioPool = {
 
 		$('.audiotags').eq(this.NumUsed).attr('src', path);
 		$('.audiotags').eq(this.NumUsed).attr('id', "audio"+ID);
-		if (this.LoopAudio) {
-			$('.audiotags').eq(this.NumUsed).attr('loop', 'loop');
-		}
 		
 		$('.audiotags').eq(this.NumUsed).off();
 		$('.audiotags').eq(this.NumUsed).on("timeupdate", this.timeUpdateCallback);
+		$('.audiotags').eq(this.NumUsed).on("timeupdate", this.ABLoopCallback);
+		$('.audiotags').eq(this.NumUsed).on('ended', this, function(e) {
+			if (e.data.LoopAudio==true) {
+				this.currentTime = e.data.ABPos[0] / 100 * e.target.duration;
+				this.play();
+			}
+		});
+		
 		$('.audiotags').eq(this.NumUsed).on("loadeddata", this.dataLoadedCallback);
 		$('.audiotags').eq(this.NumUsed).on("error", this.errorCallback);
 		
@@ -84,7 +104,9 @@ var AudioPool = {
 	// play audio with specified ID
 	play: function(ID){
 		var audiotag = document.getElementById("audio"+ID);
-		audiotag.currentTime = 0;
+		
+		audiotag.currentTime = this.ABPos[0] / 100 * audiotag.duration;
+			
 		audiotag.play(); 		
 	},
 	
@@ -110,27 +132,23 @@ var AudioPool = {
 	setLooped: function(loop) {
 		if (loop!=this.LoopAudio) {
 			this.LoopAudio = loop;
-			
-			var audioTags = document.body.getElementsByTagName("audio");   	
-			for (var i = 0; i<audioTags.length; i++) { 
-				audioTags[i].loop = loop;
-			}
 		}
 	},
 	
 	// toggle loop mode
 	toggleLooped: function() {
 		this.LoopAudio = !this.LoopAudio;
-		
-		var audioTags = document.body.getElementsByTagName("audio");   	
-		for (var i = 0; i<audioTags.length; i++) { 
-			audioTags[i].loop = this.LoopAudio;
-		}		
+
 	},		
 }
 
 // ###################################################################
 // some helper functions
+
+// logarithm to base 10
+function log10(val) {
+  return Math.log(val) / Math.log(10);
+}
 
 // check for Internet Explorer version
 function clientIsIE() {
@@ -176,12 +194,17 @@ function pauseAudios() {
 // enable looping for all audios
 function loopAudios() {    
     AudioPool.toggleLooped();
+	
+	//if (AudioPool.LoopAudio==true)
+	//	$('#ABRange').slider('enable');
+	//else 
+	//	$('#ABRange').slider('disable');	
 }
 
 // ###################################################################
 // set volume of audio pool
 function setVolume() {
-	var vol = $('#VolumeSlider').slider('option', 'value') / 100;
+	var vol = log10($('#VolumeSlider').slider('option', 'value')) / 2;
 	AudioPool.setVolume(vol);
 }
 
@@ -200,18 +223,22 @@ function playAudio(id) {
 	AudioPool.play(id);
 }
 
-
 // ###################################################################
 // audio time update callback
 function audioTimeUpdate(e) {
-	var duration = document.getElementById('duration');
+
 	var s = parseInt(e.target.currentTime % 60);
 	var m = parseInt((e.target.currentTime / 60) % 60);
 	
 	if (m<10) m = "0"+m;
 	if (s<10) s = "0"+s;            
 	
-	duration.innerHTML = m + ':' + s;
+	$('#duration > span').html( m + ':' + s );
+	
+	var progress = e.target.currentTime / e.target.duration * 100;
+	
+	$('#ProgressBar').progressbar( "option", "value", progress);
+
 }
 
 // ###################################################################
@@ -576,8 +603,24 @@ function PageReady() {
 			change: setVolume,
 			value:100,
 		});
+		
+	if (TestData.EnableABLoop==true) {
+		$('#ABRange').slider({
+				range: true,
+				values: [ 0, 100],
+				min:0,
+				max:100,
+				slide: function( event, ui ) {
+					AudioPool.ABPos = ui.values;
+				}
+			});		
+	} else {
+		$('#ABRange').hide();
+		$('#ProgressBar').css('margin-top', $('#ProgressBar').height() + 'px');
+	}
 	$('#PauseButton').button();
 	$('#loopAudio').button();
+	$('#ProgressBar').progressbar();
 	$('#nextTest').button();
 	$('#prevTest').button();
 	$('#startTest').button();
@@ -590,7 +633,7 @@ function PageReady() {
 	AudioPool.dataLoadedCallback = audioLoadedCallback;
 	
 	AudioPool.setLooped(TestData.LoopByDefault);
-	
+		
 	// install handler to warn user when test is running and he tries to leave the page
 	window.onbeforeunload = function () {
 		if (TestState.TestIsRunning) {
