@@ -38,6 +38,12 @@ supported by all browsers except Internet Explorer. Other file formats like .FLA
 .OGG are only supported by different subsets of browsers.
 
 
+Contact and support
+--------------------
+
+sebastian_kraft \AT\ gmx \DOT\ de
+
+
 License
 ---------------------
 
