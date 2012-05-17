@@ -149,6 +149,10 @@ body {
 }
 
 
+#TimeLine > #ProgressBar > .ui-widget-header{
+	background: #D5E5F6;
+}
+
 .playButton{
 	font-size:80%;
 }
