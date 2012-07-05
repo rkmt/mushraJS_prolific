@@ -19,9 +19,9 @@ var TestData = {
       "Reference": "test1/reference.wav",
       "Files": [
             "test1/1.wav",
-			"test1/2.wav",
-			"test1/3.wav",
-			"test1/4.wav",
+            "test1/2.wav",
+            "test1/3.wav",
+            "test1/4.wav",
         ]
     },
     //    
@@ -30,9 +30,9 @@ var TestData = {
       "Reference": "test2/reference.wav",
       "Files": [
             "test2/1.wav",
-			"test2/2.wav",
-			"test2/3.wav",
-			"test2/4.wav",
+            "test2/2.wav",
+            "test2/3.wav",
+            "test2/4.wav",
         ]
     },
   ]
