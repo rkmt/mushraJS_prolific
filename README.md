@@ -53,6 +53,12 @@ to run out of the box and needs some PHP and JS skills to get it up and running.
 are plans for a more comfortable server backend but currently no time is available to work on this.
 
 
+Contact
+---------------------
+
+sebastian_kraft (AT) gmx (DOT) de
+
+
 License
 ---------------------
 
