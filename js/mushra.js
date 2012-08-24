@@ -24,7 +24,7 @@ var TestState = {
 	"FileMappings": {},		// arrays with random file mappings
 	"Ratings": {},			// array with ratings
 	"AudiosInLoadQueue": -1,
-}
+};
 
 
 // ###################################################################
@@ -140,7 +140,7 @@ var AudioPool = {
 		this.LoopAudio = !this.LoopAudio;
 
 	},		
-}
+};
 
 // ###################################################################
 // some helper functions
@@ -153,7 +153,7 @@ function log10(val) {
 // check for Internet Explorer version
 function clientIsIE() {
     if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)){ //test for MSIE x.x;
-       var ieversion=new Number(RegExp.$1) // capture x.x portion and store as a number
+       var ieversion=new Number(RegExp.$1); // capture x.x portion and store as a number
        return ieversion;
     }
     return 0;
@@ -245,7 +245,7 @@ function audioTimeUpdate(e) {
 // audio loading error callback
 function audioLoadError(e) {
 
-	var s = parseInt(e.target.currentTime % 60);
+//	var s = parseInt(e.target.currentTime % 60);
 
 	var errorTxt = "<p>ERROR loading audio file "+ e.target.src+"</p>";
 	
@@ -498,15 +498,15 @@ function RunTest(TestIndx) {
 	cell[3].innerHTML = "<img id='ScaleImage' src='"+TestData.RateScalePng+"'/>";  	
 	//cell[3].innerHTML = '<object type="image/svg+xml" data="'+TestData.RateScaleSvg+'"><img src="'+TestData.RateScalePng+'" alt="Blue Square"/></object>';
 	
-	AudioPool.addAudio(AudioID2Path(TestIndx, fileID), fileID)
+	AudioPool.addAudio(AudioID2Path(TestIndx, fileID), fileID);
 	
 	
     // add spacing
     row = tab.insertRow(-1);
     row.setAttribute("height","5"); 
 
-	var rateMin = TestData.RateMinValue;
-	var rateMax = TestData.RateMaxValue;
+//	var rateMin = TestData.RateMinValue;
+//	var rateMax = TestData.RateMaxValue;
 	
 	// add test items
     for (var i = 0; i<TestState.FileMappings[TestIndx].length; i++) { 
@@ -647,6 +647,6 @@ function PageReady() {
 		} else {
 			return;
 		}
-	}
+	};
 
 }
