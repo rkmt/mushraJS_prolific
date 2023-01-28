@@ -14,6 +14,19 @@
 	<script src="js/mushra.js" type="text/javascript"></script>	
 	
 	<link type="text/css" href="css/styles.css" rel="Stylesheet" />		
+
+<script>
+        var prolific = "AAA";
+        window.onload = function() {
+            const url = new URL(window.location.href);
+            const params = url.searchParams;
+            console.log(params);
+            const username = params.get("PROLIFIC_PID");
+            const span = document.getElementById("prolific");
+            span.innerText = username;
+            prolific = username;
+        }
+    </script>
 </head>
 
 <body onload="PageReady();">
@@ -33,12 +46,14 @@
 	<!-- introduction before the test starts -->
 	<div id="TestIntroduction" class="commonBox">
         <div style="text-align:left">
-        Thanks for your interest in participating in the listening test. The overall test will roughly take 15 minutes. Please take the time and carefully rate every item.
+<p>This is a voice quality evaluation for the technology that converts whisper voices or voices with speech or hearing disabilities into normal voices.  It will take about 15 minutes to complete. 
+
+<p>Your survey responses will be strictly confidential, and data from this research will be reported only in the aggregate. 
         <br />
         <br />
 		Instructions:
 		<ul>			
-		    <li>Most important: use high quality studio headphones and a good soundcard!</li>
+<li>*IMPORTANT* Please do this test in a silent environment or with a headphone.</li>
 		    <li>Listen through all test files and test sets before you do any ratings to get used to the material.</li>
 		    <li>Rate the quality of the test items only compared to the reference on top.</li>		    		    
 		    <li>Try to rate the overall impression of a test item and don't concentrate on single aspects. </li>			    
@@ -60,12 +75,10 @@
 		<!-- show some informations before submitting the results -->
 		<div id="SubmitBox">
 			<p> 
-				Please submit the results to our server. If you enter a name or email adress this 
-				would make it easier to contact you if we have further questions. 
+				Please submit the results to our server. 
 			</p>
 			
-			Name: <input id="UserName" type="text" size="40" maxlength="40" /><br />
-			Email: <input id="UserEMail" type="text" size="40" maxlength="40" /><br />
+			<!-- Prolific ID: <input id="UserName" type="text" size="40" maxlength="40" /><br /> -->
 			<br />
 			<button id="SubmitData" onclick="SubmitTestResults();">Submit</button>
 		</div>
@@ -87,8 +100,8 @@
 
 	<!-- controls to go to next/previous test -->
 	<div id="TestControls" class="commonBox">
-		<button id="nextTest" onclick="RunTest(TestState.CurrentTest+1);" >Next Test</button>		
-		<button id="prevTest" onclick="RunTest(TestState.CurrentTest-1);" >Previous Test</button>	
+		<button id="nextTest" onclick="RunTest(TestState.CurrentTest+1);" >Next Test</>		
+		<button id="prevTest" onclick="RunTest(TestState.CurrentTest-1);" >Previous Test</>	
 	</div>
 
 	<!-- playback control -->

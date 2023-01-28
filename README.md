@@ -1,3 +1,42 @@
+# [mushraJS](https://github.com/chrisbaume/mushraJS)  を　[Prolific](https://www.prolific.co/) で利用できるように改造
+ 
+音声評価ITU標準 MUSHURA (Multiple Stimuli with Hidden Reference and Anchor) をWeb上で実行する MusuraJS を、クラウドサーベイシステム Prolificと接続できるように改造したものです。
+
+## Prolific側の設定
+
+![url](./url.png)
+のようにしてこのページにサーベイをリダイレクトするように設定。`I'll use URL parameters`を選択。
+
+![returnURL](./returnURL.png)
+`I'll  redirect them using a URL` を選択して redirect URLを得る。
+
+## mushraJS側の設定
+
+example_config.js の
+```
+"ReturnURL": "https://app.prolific.co/submissions/complete?cc=XXXYYYZZZ", 
+```    
+をProlificの redicrect URLに設定。
+
+results に結果が保存されるので、PHPでアクセスできるように
+`$ chwon apache retuls`
+としておく。
+
+以下のうなインタフェースで音声評価ができる。音声ファイルや質問数は`example_config.js`を編集して設定できる:
+![screeen](./screen.png)
+
+回答ごとに、
+```json:results/R__0128-0201.json
+{"ratings":{"0":{"0":56,"1":79,"2":28,"3":0,"HiddenRef":46},"1":{"0":61,"1":67,"2":44,"3":46,"HiddenRef":38}},"id":"aabbccc14d21e35401656"}
+```
+のようなファイルが生成される。
+
+- [MUSHRA](https://en.wikipedia.org/wiki/MUSHRA) : ITU-R 音声評価方式標準
+- [Prolific](https://www.prolific.co/) : クラウドソーシングサーベイシステム
+- [mushraJS](https://github.com/chrisbaume/mushraJS) : MUSHRA をWebサービスとして利用可能にしたもの
+
+
+
  mushraJS
 =====================
 
